@@ -1,10 +1,10 @@
-def isWordGuessed(secretWord, lettersGuessed):
-    lettersGuessed = {l:0 for l in lettersGuessed}
-    for letter in secretWord:
-        if letter not in lettersGuessed:
-            return False
-    return True  
+def f(n):
+   """
+   n: integer, n >= 0.
+   """
+   if n == 0:
+      return 1
+   else:
+      return n * f(n-1)
 
-secretWord = 'apple' 
-lettersGuessed = ['e', 'i', 'k', 'p', 'r', 's']
-print(isWordGuessed(secretWord, lettersGuessed))
+print(f(3))
