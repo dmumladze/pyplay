@@ -86,8 +86,7 @@ def displayHand(hand):
     """    
     display = []
     for letter in sorted(hand.keys()):
-        for j in range(hand[letter]):
-            display.append(letter)
+        display.append(letter * hand[letter])
     return " ".join(display)
 #
 # Problem #2: Make sure you understand how this function works and what it does!
