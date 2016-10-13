@@ -57,22 +57,16 @@ def getFrequencyDict(sequence):
 # Problem #1: Scoring a word
 #
 def getWordScore(word, n):
-    """
-    Returns the score for a word. Assumes the word is a valid word.
+    score = 0
 
-    The score for a word is the sum of the points for letters in the
-    word, multiplied by the length of the word, PLUS 50 points if all n
-    letters are used on the first turn.
-
-    Letters are scored as in Scrabble; A is worth 1, B is worth 3, C is
-    worth 3, D is worth 2, E is worth 1, and so on (see SCRABBLE_LETTER_VALUES)
-
-    word: string (lowercase letters)
-    n: integer (HAND_SIZE; i.e., hand size required for additional points)
-    returns: int >= 0
-    """
-    # TO DO ... <-- Remove this comment when you code this function
-
+    for l in word:
+        score += SCRABBLE_LETTER_VALUES.get(l, 0)
+    if score > 0:
+        score *= len(word)
+    if word and len(word) == n:
+        score += 50
+    
+    return score
 
 
 #
@@ -85,16 +79,16 @@ def displayHand(hand):
     For example:
     >>> displayHand({'a':1, 'x':2, 'l':3, 'e':1})
     Should print out something like:
-       a x x l l l e
+        a x x l l l e
     The order of the letters is unimportant.
 
     hand: dictionary (string -> int)
-    """
-    for letter in hand.keys():
+    """    
+    display = []
+    for letter in sorted(hand.keys()):
         for j in range(hand[letter]):
-             print(letter,end=" ")       # print all on the same line
-    print()                             # print an empty line
-
+            display.append(letter)
+    return " ".join(display)
 #
 # Problem #2: Make sure you understand how this function works and what it does!
 #
@@ -142,7 +136,12 @@ def updateHand(hand, word):
     hand: dictionary (string -> int)    
     returns: dictionary (string -> int)
     """
-    # TO DO ... <-- Remove this comment when you code this function
+    result  = hand.copy()
+    for l in word:
+        score = result.get(l, None)
+        if score:
+            result[l] -= 1
+    return result
 
 
 
@@ -160,7 +159,16 @@ def isValidWord(word, hand, wordList):
     hand: dictionary (string -> int)
     wordList: list of lowercase strings
     """
-    # TO DO ... <-- Remove this comment when you code this function
+    if word not in wordList:
+        return False
+    hcopy = hand.copy()
+    for l in word:
+        v = hcopy.get(l)
+        if v is None or v == 0:
+            return False
+        else:
+            hcopy[l] -= 1
+    return True 
 
 
 #
@@ -174,9 +182,7 @@ def calculateHandlen(hand):
     hand: dictionary (string-> int)
     returns: integer
     """
-    # TO DO... <-- Remove this comment when you code this function
-
-
+    return sum(hand.values())
 
 def playHand(hand, wordList, n):
     """
@@ -200,35 +206,41 @@ def playHand(hand, wordList, n):
       n: integer (HAND_SIZE; i.e., hand size required for additional points)
       
     """
-    # BEGIN PSEUDOCODE <-- Remove this comment when you code this function; do your coding within the pseudocode (leaving those comments in-place!)
-    # Keep track of the total score
-    
-    # As long as there are still letters left in the hand:
-    
-        # Display the hand
-        
-        # Ask user for input
-        
-        # If the input is a single period:
-        
-            # End the game (break out of the loop)
+    total = 0
+    hcopy = hand.copy()
 
+    while sum(hcopy.values()) != 0:
+        # Display the hand
+        print('Current Hand: ', displayHand(hcopy))
+        # Ask user for input
+        userInput = input('Enter word, or a "." to indicate that you are finished: ')
+        # If the input is a single period:
+        if userInput == '.':
+            # End the game (break out of the loop)
+            break
             
         # Otherwise (the input is not a single period):
-        
+        elif userInput != '.': 
             # If the word is not valid:
-            
+            if isValidWord(userInput, hcopy, wordList) == False:
                 # Reject invalid word (print a message followed by a blank line)
-
+                print('Invalid word, please try again.')
+                print()
+                
             # Otherwise (the word is valid):
-
+            else:
                 # Tell the user how many points the word earned, and the updated total score, in one line followed by a blank line
+                total += getWordScore(userInput, n)
+                print(userInput , 'earned ', getWordScore(userInput, n), 'points. ', 'Total: ', total)
+                print()
                 
                 # Update the hand 
-                
+                hcopy = updateHand(hcopy, userInput)
+                print()
 
     # Game is over (user entered a '.' or ran out of letters), so tell user the total score
-
+    if userInput == '.' or sum(hcopy.values()) == 0:
+        print('Run out of letters. Total score: ', total,' points.')
 
 #
 # Problem #5: Playing a game
@@ -246,12 +258,27 @@ def playGame(wordList):
  
     2) When done playing the hand, repeat from step 1    
     """
-    # TO DO ... <-- Remove this comment when you code this function
-    print("playGame not yet implemented.") # <-- Remove this line when you code the function
+    hcopy = {}
+    while True:        
+        getInput = input('Enter n to deal a new hand, r to replay the last hand, or e to end game: ')
+        input('Enter u to have yourself play, c to have the computer play: ')        
+        if getInput == 'n':
+            hand = dealHand(HAND_SIZE)
+            playHand(hand, wordList, HAND_SIZE)
+            hcopy = hand.copy()
+            print()    
+        elif getInput == 'r':
+            if hcopy == {}:
+                print('You have not played a hand yet. Please play a new hand first!')
+                print()             
+            else:
+                playHand(hcopy, wordList, HAND_SIZE)
+                print()
+        elif getInput == 'e':
+            return None
+        else:
+            print('Invalid command.')    
    
-
-
-
 #
 # Build data structures used for entire session and play game
 #

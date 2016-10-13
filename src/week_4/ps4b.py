@@ -94,7 +94,6 @@ def compPlayHand(hand, wordList, n):
                 print()
     # Game is over (user entered a '.' or ran out of letters), so tell user the total score
     print('Total score: ' + str(totalScore) + ' points.')
-
     
 #
 # Problem #6: Playing a game
@@ -124,9 +123,38 @@ def playGame(wordList):
 
     wordList: list (string)
     """
-    # TO DO... <-- Remove this comment when you code this function
-    print("playGame not yet implemented.") # <-- Remove this when you code this function
-
+    hand = {}
+    
+    while True:
+      inpt = input('Enter n to deal a new hand, r to replay the last hand, or e to end game: ')
+      print()
+      if inpt == 'e':
+          return None        
+      elif inpt not in ('n','r'):
+          print('Invalid command.')          
+      elif hand == {} and inpt == 'r':
+          print('You have not played a hand yet. Please play a new hand first!')          
+      elif inpt == 'n' or inpt == 'r': # if input is 'n' then need to get new hand, and store it for repeat later       
+        if (inpt == 'n'):
+            hand = dealHand(HAND_SIZE)        
+            hcopy = hand.copy()
+        else: # if input is 'r', use the hand which saved previously
+            hand = hcopy.copy()
+        
+        while True:          
+          inptCom = input('Enter u to have yourself play, c to have the computer play: ')
+          print()
+          if inptCom == 'u':
+            playHand(hand, wordList, HAND_SIZE)
+            print()
+            break
+          elif inptCom == 'c':
+            compPlayHand(hand, wordList, HAND_SIZE)
+            print()
+            break        
+          else:
+              print('Invalid command.')
+              print()    
         
 #
 # Build data structures used for entire session and play game
