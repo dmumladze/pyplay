@@ -216,16 +216,14 @@ def playHand(hand, wordList, n):
         # If the input is a single period:
         if userInput == '.':
             # End the game (break out of the loop)
-            break
-            
+            break            
         # Otherwise (the input is not a single period):
         elif userInput != '.': 
             # If the word is not valid:
             if isValidWord(userInput, hcopy, wordList) == False:
                 # Reject invalid word (print a message followed by a blank line)
                 print('Invalid word, please try again.')
-                print()
-                
+                print()                
             # Otherwise (the word is valid):
             else:
                 # Tell the user how many points the word earned, and the updated total score, in one line followed by a blank line
