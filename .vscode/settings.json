@@ -6,7 +6,8 @@
         "**/.svn": true,
         "**/.hg": true,
         "**/.DS_Store": true,
-        ".gitignore": true 
+        ".gitignore": true,
+        "**/__pycache__": true
     },
 
     "python.linting.enabled": false,

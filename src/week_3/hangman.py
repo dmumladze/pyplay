@@ -3,7 +3,7 @@
 import random
 import string
 
-WORDLIST_FILENAME = "./data/words.txt"
+WORDLIST_FILENAME = "words.txt"
 
 def loadWords():
     print("Loading word list from file...")
