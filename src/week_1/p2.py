@@ -1,20 +1,36 @@
-i = -1
-t = ""
-r = 0
-c = 0
-q = "bob"
-s = "anhghdfbobbobmnmnmnbobobobpopopodffgjh"
 
-while (True):
-    i +=1
-    if i == len(s):
-        break
-    t = t + s[i]
-    if len(t) == len(q):
-        if t == q:
-            r += 1
-            t = s[i]
+text  = "anhghdfbobbobkmgwxmnbobobobpoxypodftgjhbob"
+find  = "bob"
+
+#solution 1 
+index = 0
+word  = ""
+match = 0
+
+while index < len(text):    
+    word = word + text[index]
+    if len(word) == len(find):
+        if word == find:
+            match += 1
+            word = text[index]
         else:
-            i -= len(q)-1
-            t = ""            
-print("Number of times '" + q + "' occurs is: " + str(r))
+            index -= len(find)-1
+            word = "" 
+    index += 1 
+print("Number of times '", find, "' occurs is: ", str(match), sep='')
+
+#solution 2
+start = 0
+end   = len(find)
+match = 0
+
+while end <= len(text):
+    word = text[start:end]
+    if word == find:
+        match += 1
+        start = end-1
+        end   = end + len(find)-1
+    else:
+        start += 1
+        end   += 1              
+print("Number of times '" ,find, "' occurs is: ", str(match), sep='')

@@ -7,4 +7,9 @@ def f(n):
    else:
       return n * f(n-1)
 
-print(f(3))
+#print(f(3))
+
+s = 'Don Quijote'
+
+print(s[3:7:2])
+
